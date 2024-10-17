@@ -55,6 +55,8 @@ deux <- function(vec) {
 #'
 #' @export
 trois <- function(vec) {
-  table(vec)
+  vec |>
+    tibble::as_tibble() |>
+    dplyr::count(value)
 
 }
