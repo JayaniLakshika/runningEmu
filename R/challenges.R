@@ -22,27 +22,36 @@ un <- function(m) {
 #' @return A numerical vector containing the longest continuous increasing subset
 #' @export
 deux <- function(vec) {
-  longest_seq <- c(vec[1])  # Longest increasing subsequence found
-  current_seq <- c(vec[1])  # Current increasing subsequence
+  n <- length(vec)
+  if (n == 0) return(c())  # Handle empty vector case
 
-  for (i in 2:length(vec)) {
+  longest_seq_start <- 1
+  longest_seq_length <- 1
+  current_seq_start <- 1
+  current_seq_length <- 1
+
+  for (i in 2:n) {
     if (vec[i] > vec[i - 1]) {
       # Continue current increasing subsequence
-      current_seq <- c(current_seq, vec[i])
+      current_seq_length <- current_seq_length + 1
     } else {
       # Compare and reset current subsequence
-      if (length(current_seq) > length(longest_seq)) {
-        longest_seq <- current_seq
+      if (current_seq_length > longest_seq_length) {
+        longest_seq_start <- current_seq_start
+        longest_seq_length <- current_seq_length
       }
-      current_seq <- c(vec[i])  # Start a new subsequence
+      current_seq_start <- i  # Start a new subsequence
+      current_seq_length <- 1
     }
   }
 
-  if (length(current_seq) > length(longest_seq)) {
-    longest_seq <- current_seq
+  # Final check after the loop
+  if (current_seq_length > longest_seq_length) {
+    longest_seq_start <- current_seq_start
+    longest_seq_length <- current_seq_length
   }
 
-  return(longest_seq)
+  return(vec[longest_seq_start:(longest_seq_start + longest_seq_length - 1)])
 }
 
 #' @title Third
