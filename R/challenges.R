@@ -55,5 +55,7 @@ deux <- function(vec) {
 #'
 #' @export
 trois <- function(vec) {
-  table(vec)
+  tabulate(vec) |>
+    rbind(unique(vec))
+
 }
