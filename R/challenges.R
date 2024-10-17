@@ -22,28 +22,27 @@ un <- function(m) {
 #' @return A numerical vector containing the longest continuous increasing subset
 #' @export
 deux <- function(vec) {
-  reduce(2:length(vec), .init = list(longest = vec[1], current = vec[1]),
-         .f = function(state, i) {
-           if (vec[i] > vec[i - 1]) {
-             # Continue current increasing subsequence
-             state$current <- c(state$current, vec[i])
-           } else {
-             # Compare and reset current subsequence
-             if (length(state$current) > length(state$longest)) {
-               state$longest <- state$current
-             }
-             state$current <- vec[i]
-           }
-           state
-         }) %>%
-    {
-      # Final check for the last subsequence
-      if (length(.$current) > length(.$longest)) {
-        return(.$current)
-      } else {
-        return(.$longest)
+  longest_seq <- c(vec[1])  # Longest increasing subsequence found
+  current_seq <- c(vec[1])  # Current increasing subsequence
+
+  for (i in 2:length(vec)) {
+    if (vec[i] > vec[i - 1]) {
+      # Continue current increasing subsequence
+      current_seq <- c(current_seq, vec[i])
+    } else {
+      # Compare and reset current subsequence
+      if (length(current_seq) > length(longest_seq)) {
+        longest_seq <- current_seq
       }
+      current_seq <- c(vec[i])  # Start a new subsequence
     }
+  }
+
+  if (length(current_seq) > length(longest_seq)) {
+    longest_seq <- current_seq
+  }
+
+  return(longest_seq)
 }
 
 #' @title Third
@@ -56,7 +55,6 @@ deux <- function(vec) {
 #'
 #' @export
 trois <- function(vec) {
-  tabulate(vec) |>
-    rbind(unique(vec))
+  table(vec)
 
 }
